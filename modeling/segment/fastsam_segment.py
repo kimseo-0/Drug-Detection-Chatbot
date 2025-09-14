@@ -4,11 +4,11 @@ import numpy as np
 from ultralytics import FastSAM
 
 def process_images_with_fastsam(image_names: list, image_dir: str, result_dir: str):
-    # 결과 디렉토리가 없으면 생성합니다.
     os.makedirs(result_dir, exist_ok=True)
 
-    # FastSAM 모델 로드 (FastSAM-s.pt는 사용자 코드에 따름)
-    model = FastSAM("C:\Potenup\Drug-Detection-Chatbot\modeling\segment\models\FastSAM-s.pt")
+    # FastSAM 모델 로드
+    model_name = "FastSAM-s.pt"
+    model = FastSAM("C:\Potenup\Drug-Detection-Chatbot\modeling\segment\models\\" + model_name)
     
     # 이미지 리스트를 순회하며 처리
     for source_path in image_names:
