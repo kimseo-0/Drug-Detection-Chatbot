@@ -1,2 +1,5 @@
 /data
-/modeling/segment/models
+/modeling/YOLO/yolo11n/models
+/venv
+/.env
+/modeling/YOLO/yolo11n/drug-detection-1
