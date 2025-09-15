@@ -1,5 +1,10 @@
 /data
+<<<<<<< HEAD
 /modeling/YOLO/yolo11n/models
 /venv
 /.env
 /modeling/YOLO/yolo11n/drug-detection-1
+=======
+/modeling/segment/models
+/utils/__pycache__
+>>>>>>> main
