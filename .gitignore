@@ -5,3 +5,4 @@
 /modeling/segment/drug-detect-1
 /modeling/segment/runs
 .env
+/modeling/segment/images
