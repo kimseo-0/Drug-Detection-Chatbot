@@ -1,3 +1,8 @@
 /data
 /modeling/segment/models
 /utils/__pycache__
+/modeling/segment/drug-detect-2-1
+/modeling/segment/drug-detect-1
+/modeling/segment/runs
+.env
+/modeling/segment/images
