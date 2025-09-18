@@ -6,3 +6,6 @@
 /modeling/segment/runs
 .env
 /modeling/segment/images
+/modeling/segment/drug-detect-3-2
+/modeling/segment/pill-detect-1
+modeling/segment/yolo11n.pt
