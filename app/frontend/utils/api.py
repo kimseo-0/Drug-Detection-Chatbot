@@ -18,9 +18,15 @@ def get_user_profile(user_id: str):
         return None
     raise Exception(f"API Error: {r.status_code} {r.text}")
 
-def analyze_pill(image, image_type):
-    pass
-
+def analyze_pill(file_obj, image_type: str):
+    url = f"{BASE_URL}/pill/analyze"
+    files = {"file": (file_obj.name, file_obj, "application/octet-stream")}
+    data = {"image_type": image_type}
+    r = requests.post(url, files=files, data=data, timeout=60)
+    if r.ok:
+        return r.json()
+    raise Exception(f"{r.status_code} {r.text}")
+    
 def check_drug(payload):
     pass
 

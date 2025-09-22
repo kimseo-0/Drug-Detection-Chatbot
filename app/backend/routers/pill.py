@@ -15,7 +15,6 @@ async def analyze_pill(
 
     if image_type == "pill":
         # 알약 사진 → 분류기 경로
-        # (필요시 detect → crop → classify 파이프라인으로 확장)
         cls = vision.classify_pill(content)   # placeholder
         return {"mode": "pill", "classification": cls}
 
