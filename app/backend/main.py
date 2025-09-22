@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from routers import user, pill, chat
+from routers import user
+from routers import pill
 
 app = FastAPI()
 
