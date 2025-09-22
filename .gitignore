@@ -6,3 +6,12 @@
 /modeling/segment/runs
 .env
 /modeling/segment/images
+/modeling/segment/drug-detect-3-2
+/modeling/segment/pill-detect-1
+modeling/segment/yolo11n.pt
+/app/backend/__pycache__
+/app/backend/routers/__pycache__
+/app/backend/infra/__pycache__
+/app/frontend/__pycache__
+/app/frontend/utils/__pycache__
+uv.lock
