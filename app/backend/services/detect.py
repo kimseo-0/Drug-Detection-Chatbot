@@ -1,5 +1,4 @@
 import os
-import io
 import cv2
 import numpy as np
 from typing import List, Optional
@@ -50,7 +49,6 @@ def detect_pills(image_bytes: bytes) -> List[np.ndarray]:
     """
     입력: 이미지 바이트 (예: FastAPI UploadFile.read())
     출력: YOLO로 탐지한 바운딩박스들을 원본 기준으로 크롭한 이미지 리스트(np.ndarray)
-    - 후속 분류기(classify) 입력으로 바로 사용 가능
     """
     img = _bytes_to_bgr(image_bytes)
 
@@ -72,24 +70,3 @@ def detect_pills(image_bytes: bytes) -> List[np.ndarray]:
                 crops.append(crop)
 
     return crops
-    """
-    TODO: 이미지 바이트를 받아 알약 분류 결과 반환
-    예: {"label": "조피스타정", "score": 0.92, "candidates":[...]}
-    """
-    images_ndarray = detect_pills(image_bytes)
-
-    # 분류모델 가져와서
-    # 예측하고
-    # 결과를 result 담아
-
-    images_b64 = []
-    for img in images_ndarray:
-        # cv2.imencode로 메모리에 JPEG 저장
-        success, buf = cv2.imencode(".jpg", img)
-        if not success:
-            continue
-        b64 = base64.b64encode(buf.tobytes()).decode("utf-8")
-        images_b64.append(b64)
-
-    result = {"label": "DEMO_PILL", "score": 0.99, "candidates": [], "images": images_b64}
-    return result
