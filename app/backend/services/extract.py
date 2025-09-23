@@ -18,10 +18,14 @@ quantization_config = BitsAndBytesConfig(
 
 )
 
+_model = None
+
 def _get_model():
     global _model 
+    print("모델 불러오기")
     
-    if _model is None:
+    if _model is None:    
+        print("모델 없음 불러와라")
         _model = AutoModelForVision2Seq.from_pretrained(
             model_name,
             quantization_config=quantization_config,
