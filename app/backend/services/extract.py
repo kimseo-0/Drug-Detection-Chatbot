@@ -6,47 +6,18 @@ import base64
 import torch
 from transformers import AutoProcessor, AutoTokenizer, AutoModelForVision2Seq
 from transformers import BitsAndBytesConfig
-
-model_name = "NCSOFT/VARCO-VISION-2.0-1.7B"
-processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
-
-quantization_config = BitsAndBytesConfig(
-    load_in_8bit = True,
-    load_in_4bit = False,
-    lim_int8_threshold = 6.0,
-    lim_int8_has_fp16_weight = False,
-
-)
-
-_model = None
-
-def _get_model():
-    global _model 
-    print("모델 불러오기")
-    
-    if _model is None:    
-        print("모델 없음 불러와라")
-        _model = AutoModelForVision2Seq.from_pretrained(
-            model_name,
-            quantization_config=quantization_config,
-            dtype=torch.bfloat16,   # torch_dtype -> dtype
-        )
-
-    return _model
+from services import openai
+import json 
 
 def parse_drug_facts(ocr_texts: str, image_path: str) -> dict:
     """
     TODO: 추출 텍스트에서 성분/효능/주의/용법 등을 파싱해 구조화 > LLM1
     """
 
-    model = _get_model()
-
-    with open(image_path, "rb") as image_file:
-        image_data = base64.b64encode(image_file.read()).decode('utf-8')
-
     system_prompt = """
     당신은 보수적인 약학 전문가입니다. 약학 전문가로서, 
-    사용자가 제공한 이미지와 OCR 텍스트 데이터 2가지 모두 확인해서 이미지에 적힌 정보를 정확하게 추출하는 역할을 합니다.
+    사용자가 제공한 OCR 텍스트 데이터 확인해서 JSON 형식의 서식을 작성해 주세요.
+
 
     규칙:
     - 제공된 데이터에 없는 항목은 **반드시 "없음"이라고 작성**할 것. 
@@ -71,52 +42,9 @@ def parse_drug_facts(ocr_texts: str, image_path: str) -> dict:
         '효능' : "여러가지 효능/효과에 대한 모든 리스트, 없으면 없다고 작성할 것", 
         '용법' : "여러가지 용법에 대한 리스트, 없으면 없다고 작성할 것", 
         '주의사항' : "주의사항 리스트, 없으면 없다고 작성할 것" 
-    }}
+    }} 
     """
+    answer = openai.chat(system_prompt, "user")
 
-    messages = [
-        [
-            {
-                "role": "system",
-                "content":[{"type": "text", "text": system_prompt},]
-            },
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": ocr_texts},  # "text": ocr_texts 와 "text" : f"{ocr_texts}" 같은 표현
-                    {
-                        "type": "image",
-                        "source_type": "base64",
-                        "data": "{image_data}",
-                        "mime_type": "image/jpeg",
-
-                    }
-
-                ]
-
-            
-            }
-        ]
-    ]
-
-    # 입력 데이터 토크나이징하기 processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True) 
-    inputs = processor.apply_chat_template(
-        messages,
-        add_generation_prompt = True,
-        tokenize = True,
-        return_dict = True,
-        return_tensors = "pt",
-    ).to(model.device, torch.float16)
-    generate_ids = model.generate(
-        **inputs, 
-        max_new_tokens=1024,
-        temperature=0.1,    # 낮출수록 보수적이고 일관된 답변 생성 
-        top_p=0.1,          # 높일수록 다양한 단어 선택, 낮추면 더 보수적
-        do_sample=True,     # 샘플링 활성화
-        )
-
-    generate_ids_trimmed = [
-        out_ids[len(in_ids) :] for in_ids, out_ids in zip(inputs.input_ids, generate_ids)
-    ]
-    output = processor.decode(generate_ids_trimmed[0], skip_special_tokens=True)
-    return output
+    answer = json.loads(answer.choices[0].message.content)
+    return answer
