@@ -2,14 +2,32 @@ from paddleocr import PaddleOCR
 from typing import Optional
 import numpy as np
 from sklearn.cluster import KMeans
+import base64
+import torch
+from transformers import AutoProcessor, AutoTokenizer, AutoModelForVision2Seq
+from transformers import BitsAndBytesConfig
 
 _ocr = Optional[PaddleOCR] = None
+model_name = "NCSOFT/VARCO-VISION-2.0-1.7B"
+processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
 
-def _get_model() -> str:
-    """
-    TODO: 이미지 바이트에서 OCR 텍스트 추출 > OCR
-    """
+quantization_config = BitsAndBytesConfig(
+    load_in_8bit = True,
+    load_in_4bit = False,
+    lim_int8_threshold = 6.0,
+    lim_int8_has_fp16_weight = False,
+
+)
+
+_model = AutoModelForVision2Seq.from_pretrained(
+    model_name,
+    quantization_config=quantization_config,
+    dtype=torch.bfloat16,   # torch_dtype -> dtype
+)
+
+def _get_model():
     global _ocr 
+    global _model 
     
     if _ocr is None:
         _ocr = PaddleOCR(
@@ -18,12 +36,11 @@ def _get_model() -> str:
             use_textline_orientation=False,      # 글자 한 줄 한 줄 기울기 파악해서 보정할건지 
             lang="korean"
         )
-    return "DEMO OCR 텍스트"
 
+    return _ocr
 
-def extract_text(image_bytes, y_threshold=15, diff_threshold=600, balance_ratio=0.4):  # y_threshold=15, diff_threshold=600, balance_ratio=0.4 
+def extract_text(image_path, y_threshold=15, diff_threshold=600, balance_ratio=0.4):  # y_threshold=15, diff_threshold=600, balance_ratio=0.4 
     ocr = _get_model()
-
     results = ocr.predict(input=image_path)
     
     if not results or not results[0]:
@@ -97,9 +114,3 @@ def extract_text(image_bytes, y_threshold=15, diff_threshold=600, balance_ratio=
         ordered_texts = sort_and_group(items, y_threshold)
 
     return ordered_texts
-
-def parse_drug_facts(text: str) -> dict:
-    """
-    TODO: 추출 텍스트에서 성분/효능/주의/용법 등을 파싱해 구조화 > LLM1
-    """
-    return {"ingredients": [], "warnings": [], "usage": "", "brand": ""}
