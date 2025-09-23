@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 from typing import List, Optional
 from ultralytics import YOLO
-import base64
 
 def enhance_pill_bilateral(img, d=9, sigmaColor=50, sigmaSpace=50, local_gain=0.8, blend=0.6):
     bf = cv2.bilateralFilter(img, d, sigmaColor, sigmaSpace)
