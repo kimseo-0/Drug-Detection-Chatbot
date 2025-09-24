@@ -1,14 +1,12 @@
 {
   "test": {
     "user_id": "test",
-    "disease": "저혈압",
+    "disease": "",
     "caution_drugs": [
-      "아스피린",
-      "와파린"
+      "오구멘틴정"
     ],
     "caution_ingredients": [
-      "카페인",
-      "나트륨"
+      "아목시실린수화물"
     ],
     "current_medications": []
   }

@@ -7,7 +7,7 @@ import torch
 from transformers import AutoProcessor, AutoTokenizer, AutoModelForVision2Seq
 from transformers import BitsAndBytesConfig
 
-_ocr = Optional[PaddleOCR] = None
+_ocr = None
 model_name = "NCSOFT/VARCO-VISION-2.0-1.7B"
 processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
 
