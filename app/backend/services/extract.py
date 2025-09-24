@@ -44,7 +44,7 @@ def parse_drug_facts(ocr_texts: str, image_path: str) -> dict:
         '주의사항' : "주의사항 리스트, 없으면 없다고 작성할 것" 
     }} 
     """
-    answer = openai.chat(system_prompt, "user")
-
-    answer = json.loads(answer.choices[0].message.content)
+    answer = openai.chat(system_prompt, ocr_texts)
+    print(answer)
+    answer = json.loads(answer)
     return answer

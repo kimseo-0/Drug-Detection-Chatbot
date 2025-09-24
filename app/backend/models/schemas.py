@@ -17,5 +17,5 @@ class UserProfile(BaseModel):
     caution_ingredients: List[str] = []
     current_medications: List[str] = []
 
-    class Config:
-        orm_mode = True   # DB ORM 객체를 바로 반환할 때도 대응 가능
+    # class Config:
+    #     orm_mode = True   # DB ORM 객체를 바로 반환할 때도 대응 가능

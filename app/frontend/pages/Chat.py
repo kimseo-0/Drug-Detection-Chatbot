@@ -70,7 +70,7 @@ if user_profile:
                             st.image(image, caption=r['label'], width="stretch")
                 elif res.get("mode") == "package":
                     st.write("**OCR 결과(포장지/설명서)**")
-                    # st.json(res.get("ocr"))
+                    st.json(res.get("ocr"))
 
             except Exception as e:
                 st.error(f"분석 실패: {e}")

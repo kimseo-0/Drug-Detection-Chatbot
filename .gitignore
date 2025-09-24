@@ -17,3 +17,5 @@ modeling/segment/yolo11n.pt
 uv.lock
 /app/backend/services/__pycache__
 /modeling/llm/01_llm_extraction/__pycache__
+/app/backend/app/uploaded_images
+/app/backend/models/__pycache__
