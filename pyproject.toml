@@ -28,4 +28,7 @@ dependencies = [
     "ultralytics>=8.3.198",
     "undetected-chromedriver>=3.5.5",
     "uvicorn>=0.35.0",
+    "pillow>=11.3.0",
+    "tqdm>=4.67.1",
+    "tensorboard>=2.20.0",
 ]
