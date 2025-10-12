@@ -1,13 +1,31 @@
 {
-  "test": {
+  "test1": {
     "user_id": "test",
-    "disease": "",
+    "disease": [],
     "caution_drugs": [
       "오구멘틴정"
     ],
     "caution_ingredients": [
       "아목시실린수화물"
     ],
+    "current_medications": []
+  },
+  "test2": {
+    "user_id": "test",
+    "disease": [],
+    "caution_drugs": [],
+    "caution_ingredients": [
+      "바르비탈계약물"
+    ],
+    "current_medications": []
+  },
+  "test": {
+    "user_id": "test",
+    "disease": [
+      "아스피린계천식"
+    ],
+    "caution_drugs": [],
+    "caution_ingredients": [],
     "current_medications": []
   }
 }

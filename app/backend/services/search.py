@@ -1,6 +1,7 @@
 import pandas as pd
 from typing import Optional
 from services import openai
+import ast, json
 
 _df: Optional[pd.DataFrame] = None
 
@@ -11,9 +12,12 @@ def load_data():
     return _df
 
 def search_drug_detail(user_text):
-    data = ""
-    for i, row in list(_df.iterrows()):
-        data += f"({str(i)}, {row['제품명']})\n"
+    if user_text == "없음":
+        return []
+    
+    df = load_data()
+    lines = [f"({i}, {name})" for i, name in df['제품명'].astype(str).items()]
+    data = "\n".join(lines)
 
     system_prompt = f"""
     당신은 약 정보에 대한 CSV 데이터를 가지고 해당 데이터에서 검색을 하는 AI 입니다.
@@ -27,12 +31,14 @@ def search_drug_detail(user_text):
     {data}
 
     [출력 형식]
-    해당 제품명에 해당하는 제품 인덱스 리스트 ex) [0, 2],
+    해당 제품명에 해당하는 제품 인덱스 리스트 ex) [0, 1, 2, 3, 4, 5, 6], [0, 1, 2]
     """
     
+    res = openai.chat(system_prompt, user_text)
+    indexes = ast.literal_eval(res)
+
     result = []
-    indexes = openai.chat(system_prompt, user_text)
     for index in indexes:
-        row_dict = _df.iloc[index].to_dict()
-        result.append(row_dict)
+        row_str = json.dumps(df.iloc[int(index)].to_dict(), ensure_ascii=False)
+        result.append(row_str)
     return result
