@@ -1,0 +1,13 @@
+{
+  "test": {
+    "user_id": "test",
+    "disease": "",
+    "caution_drugs": [
+      "오구멘틴정"
+    ],
+    "caution_ingredients": [
+      "아목시실린수화물"
+    ],
+    "current_medications": []
+  }
+}

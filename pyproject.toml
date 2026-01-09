@@ -11,7 +11,6 @@ dependencies = [
     "koreanize-matplotlib>=0.1.1",
     "matplotlib>=3.10.6",
     "numpy>=2.2.6",
-    "opencv-python>=4.11.0.86",
     "openai>=1.107.3",
     "openpyxl>=3.1.5",
     "paddleocr>=3.2.0",
@@ -27,8 +26,4 @@ dependencies = [
     "pydantic>=2.11.9",
     "ultralytics>=8.3.198",
     "undetected-chromedriver>=3.5.5",
-    "uvicorn>=0.35.0",
-    "pillow>=11.3.0",
-    "tqdm>=4.67.1",
-    "tensorboard>=2.20.0",
 ]
